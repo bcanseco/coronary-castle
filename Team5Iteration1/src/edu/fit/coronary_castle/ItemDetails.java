@@ -8,11 +8,17 @@
 package edu.fit.coronary_castle;
 
 public class ItemDetails {
+	public int id;
 	public String name;
 	public String description;
-	public int id;
 	
 	private double price;
+	
+	public ItemDetails(int id, String name, String description) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
 	
 	public double getPrice() {
 		return price;

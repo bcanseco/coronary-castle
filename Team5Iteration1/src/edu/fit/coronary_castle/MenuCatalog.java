@@ -15,12 +15,12 @@ public class MenuCatalog {
 	public HashMap<Integer, ItemDetails> items;
 	
 	private MenuCatalog() {
-		// Enforce singleton pattern
+		items = new HashMap<Integer, ItemDetails>();
 	}
 	
 	public static MenuCatalog getInstance() {
 		if (instance == null) {
-			return new MenuCatalog();
+			instance = new MenuCatalog();
 		}
 		return instance;
 	}

@@ -13,21 +13,21 @@ import java.util.List;
 public class Store {
 	public static String address;
 	public static String name;
-	public static MenuCatalog catalog;
-	public static List<Register> registers;
 	public static List<Sale> completedSales;
 	
 	public Store() {
-		catalog = MenuCatalog.getInstance();
-		registers = new ArrayList<Register>();
 		completedSales = new ArrayList<Sale>();
+	}
+	
+	public Register getRegister() {
+		return Register.getInstance();
+	}
+	
+	public MenuCatalog getCatalog() {
+		return MenuCatalog.getInstance();
 	}
 	
 	public static void addCompleteSale(Sale sale) {
 		completedSales.add(sale);
-	}
-	
-	public static void main(String[] args) {
-		// TODO: Auto-generated method stub
 	}
 }

@@ -11,8 +11,17 @@ public class Register {
 	public Sale currentSale;
 	public MenuCatalog catalog;
 	
-	public Register() {
+	private static Register instance;
+	
+	private Register() {
 		catalog = MenuCatalog.getInstance();
+	}
+	
+	public static Register getInstance() {
+		if (instance == null) {
+			instance = new Register();
+		}
+		return instance;
 	}
 	
 	public void newSale() {

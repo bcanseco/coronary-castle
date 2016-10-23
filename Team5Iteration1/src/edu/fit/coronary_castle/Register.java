@@ -28,7 +28,7 @@ public class Register {
 		currentSale.makeMenuItem(desc, quantity);
 	}
 	
-	public void makePayment(boolean type) {
-		currentSale.makePayment(type);
+	public void makePayment(boolean type, double amount) {
+		currentSale.makePayment(type, amount);
 	}
 }

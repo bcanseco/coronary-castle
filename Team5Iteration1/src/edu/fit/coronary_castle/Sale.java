@@ -29,8 +29,8 @@ public class Sale {
 		orderedItems.add(new MenuItem(item, quantity));
 	}
 	
-	public void makePayment(boolean isCash) {
-		payment = isCash ? new Cash() : new Credit();
+	public void makePayment(boolean isCash, double amount) {
+		payment = isCash ? new Cash(amount) : new Credit(amount);
 	}
 	
 	public double getTotal() {
@@ -39,5 +39,9 @@ public class Sale {
 			total += item.getSubtotal();
 		}
 		return total;
+	}
+	
+	public double getBalance() {
+		return getTotal() - payment.getAmount();
 	}
 }

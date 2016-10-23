@@ -10,6 +10,10 @@ package edu.fit.coronary_castle;
 public class Credit implements Payment {
 	private double amount;
 	
+	public Credit(double amount) {
+		this.amount = amount;
+	}
+	
 	@Override
 	public double getAmount() {
 		return amount;

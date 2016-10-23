@@ -17,6 +17,6 @@ public class MenuItem {
 	}
 	
 	public double getSubtotal() {
-		return details.price * quantity;
+		return details.getPrice() * quantity;
 	}
 }

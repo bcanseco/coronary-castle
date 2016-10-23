@@ -10,6 +10,11 @@ package edu.fit.coronary_castle;
 public class ItemDetails {
 	public String name;
 	public String description;
-	public Double price;
 	public int id;
+	
+	private double price;
+	
+	public double getPrice() {
+		return price;
+	}
 }

@@ -5,7 +5,6 @@
  * Fall 2016, Florida Institute of Technology
  */
 
-package edu.fit.coronary_castle;
 
 public class MenuItem {
 	public ItemDetails details;

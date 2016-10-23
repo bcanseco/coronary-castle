@@ -5,9 +5,10 @@
  * Fall 2016, Florida Institute of Technology
  */
 
-package edu.fit.coronary_castle;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 public class MenuCatalog {
 	private static MenuCatalog instance;
@@ -28,4 +29,5 @@ public class MenuCatalog {
 	public ItemDetails getItemDetails(int id) {
 		return items.get(id);
 	}
+	
 }

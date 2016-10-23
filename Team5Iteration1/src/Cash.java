@@ -5,12 +5,11 @@
  * Fall 2016, Florida Institute of Technology
  */
 
-package edu.fit.coronary_castle;
 
-public class Credit implements Payment {
+public class Cash implements Payment {
 	private double amount;
 	
-	public Credit(double amount) {
+	public Cash(double amount) {
 		this.amount = amount;
 	}
 	

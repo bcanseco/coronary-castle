@@ -9,6 +9,11 @@ package edu.fit.coronary_castle;
 
 public class Register {
 	public Sale currentSale;
+	public MenuCatalog catalog;
+	
+	public Register() {
+		catalog = MenuCatalog.getInstance();
+	}
 	
 	public void newSale() {
 		currentSale = new Sale();
@@ -18,8 +23,9 @@ public class Register {
 		currentSale.becomeComplete();
 	}
 	
-	public void enterItem(MenuItem item) {
-		currentSale.makeMenuItem(item);
+	public void enterItem(int id, int quantity) {
+		ItemDetails desc = catalog.getItemDetails(id);
+		currentSale.makeMenuItem(desc, quantity);
 	}
 	
 	public void makePayment(boolean type) {

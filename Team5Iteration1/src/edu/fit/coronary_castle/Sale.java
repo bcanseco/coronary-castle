@@ -25,8 +25,8 @@ public class Sale {
 		Store.addCompleteSale(this);
 	}
 	
-	public void makeMenuItem(MenuItem item) {
-		orderedItems.add(item);
+	public void makeMenuItem(ItemDetails item, int quantity) {
+		orderedItems.add(new MenuItem(item, quantity));
 	}
 	
 	public void makePayment(boolean isCash) {

@@ -8,9 +8,13 @@
 package edu.fit.coronary_castle;
 
 public class MenuItem {
-	public int id;
-	public int quantity;
 	public ItemDetails details;
+	public int quantity;
+	
+	public MenuItem(ItemDetails details, int quantity) {
+		this.quantity = quantity;
+		this.details = details;
+	}
 	
 	public double getSubtotal() {
 		return details.price * quantity;

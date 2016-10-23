@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class MenuCatalog {
 	private static MenuCatalog instance;
 	
-	public HashMap<MenuItem, ItemDetails> items;
+	public HashMap<Integer, ItemDetails> items;
 	
 	private MenuCatalog() {
 		// Enforce singleton pattern
@@ -25,7 +25,7 @@ public class MenuCatalog {
 		return instance;
 	}
 	
-	public ItemDetails getItemDetails(MenuItem item) {
-		return items.get(item);
+	public ItemDetails getItemDetails(int id) {
+		return items.get(id);
 	}
 }

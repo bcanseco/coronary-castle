@@ -98,6 +98,7 @@ public class Main {
 		System.out.println("Exiting.");
 	}
 	
+	// Responsibility: Utility methods to get user input, used only for Main procedure
 	private static char getChoice(String word) {
 		Scanner scn = new Scanner(System.in);
 		System.out.print("Select "+word+" => ");

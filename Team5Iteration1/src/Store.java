@@ -21,18 +21,22 @@ public class Store {
 	}
 	
 	public Register getRegister() {
+		// Responsibility: KNOWING - the currently instantiated Register instance.
 		return Register.getInstance();
 	}
 	
 	public MenuCatalog getCatalog() {
+		// Responsibility: KNOWING - the currently instantiated MenuCatalog instance
 		return MenuCatalog.getInstance();
 	}
 	
 	public static void addCompleteSale(Sale sale) {
+		// Responsibility: DOING - recording the completed sale to the store sales records 
 		completedSales.add(sale);
 	}
 	
 	public void showMenu() {
+		// Responsibility: DOING - showing the menu catalog to the user
 		System.out.println(" WELCOME TO CORONARY CASTLE");
 		System.out.println("----------------------------");
 		Iterator<Entry<Integer, ItemDetails>> itemsIt = getCatalog().items.entrySet().iterator();

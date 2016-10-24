@@ -20,6 +20,7 @@ public class ItemDetails {
 	}
 	
 	public double getPrice() {
+		// Responsibility: KNOWING - the price of the item in the menu 
 		return price;
 	}
 }

@@ -20,6 +20,7 @@ public class MenuCatalog {
 	}
 	
 	public static MenuCatalog getInstance() {
+		// Responsibility: KNOWING - the menu catalog information 
 		if (instance == null) {
 			instance = new MenuCatalog();
 		}
@@ -27,6 +28,7 @@ public class MenuCatalog {
 	}
 	
 	public ItemDetails getItemDetails(int id) {
+		// Responsibility: KNOWING - the menu item's detailed information
 		return items.get(id);
 	}
 	

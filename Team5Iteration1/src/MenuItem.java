@@ -16,6 +16,7 @@ public class MenuItem {
 	}
 	
 	public double getSubtotal() {
+		// Responsibility: KNOWING - the total price of the order without sales tax
 		return details.getPrice() * quantity;
 	}
 }

@@ -21,6 +21,7 @@ public class Register {
 	}
 	
 	public static Register getInstance() {
+		// Responsibility: KNOWING - the initialized instance of the Register class
 		if (instance == null) {
 			instance = new Register();
 		}
@@ -28,23 +29,28 @@ public class Register {
 	}
 	
 	public void newSale() {
+		// Responsibility: DOING - the creation of a new Sale object
 		currentSale = new Sale();
 	}
 	
 	public void endSale() {
+		// Responsibility: DOING - recording the completion of a Sale
 		currentSale.becomeComplete();
 	}
 	
 	public void enterItem(int id, int quantity) {
+		// Responsibility: DOING - the addition of an item to the Sale order
 		ItemDetails desc = catalog.getItemDetails(id);
 		currentSale.makeMenuItem(desc, quantity);
 	}
 	
 	public void makePayment(boolean type, double amount) {
+		// Responsibility: DOING - the recording of the payment that has occurred
 		currentSale.makePayment(type, amount);
 	}
 
 	public void printReceipt() {
+		// Responsibility: DOING - the printing of the receipt
 		ZonedDateTime zdt = ZonedDateTime.now();
 		String header = "=== CORONARY CASTLE ===\r\n" + 
 						" 150 W. University Blvd.\r\n" +

@@ -7,5 +7,5 @@
 
 
 public interface Payment {
-	public double getAmount();
+	public double getAmount(); // Responsibility: KNOWING - the amount of the payment
 }

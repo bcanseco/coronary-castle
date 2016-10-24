@@ -8,7 +8,8 @@ import java.util.Scanner;
  */
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) { 
+		// Responsibility: DOING - all the program's interaction logic
 		
 		Store store = new Store();
 		Register register = store.getRegister();

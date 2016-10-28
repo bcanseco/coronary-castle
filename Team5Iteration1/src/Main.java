@@ -15,13 +15,15 @@ public class Main {
 		Register register = store.getRegister();
 		MenuCatalog catalog = store.getCatalog();
 		
-		ItemDetails burger = new ItemDetails(1, "Burger", "A delicious classic.", 5.25);
-		ItemDetails fries = new ItemDetails(2, "Fries", "A delicious side.", 1.98);
-		ItemDetails cola = new ItemDetails(3, "Cola ", "A delicious drink.", 2.25);
+		ItemDetails bypass = new ItemDetails(1, "Bypass\t", "Half-pound burger", 3.50);
+		ItemDetails bypass2 = new ItemDetails(2, "Double Bypass", "1 pound burger.", 6.50);
+		ItemDetails bypass3 = new ItemDetails(3, "Triple Bypass", "1.5 pound burger.", 8.50);
+		ItemDetails bypass4 = new ItemDetails(4, "Quadruple Bypass", "2 pound burger.", 9.75);
 		
-		catalog.items.put(1, burger);
-		catalog.items.put(2, fries);
-		catalog.items.put(3, cola);
+		catalog.items.put(1, bypass);
+		catalog.items.put(2, bypass2);
+		catalog.items.put(3, bypass3);
+		catalog.items.put(4, bypass4);
 		
 		store.showMenu();
 		System.out.println("CMDs:  (N)ew Sale  |  E(X)it\r\n");

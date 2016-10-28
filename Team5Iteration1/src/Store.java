@@ -42,7 +42,7 @@ public class Store {
 		Iterator<Entry<Integer, ItemDetails>> itemsIt = getCatalog().items.entrySet().iterator();
 		while(itemsIt.hasNext()) {
 			Entry<Integer, ItemDetails> item = itemsIt.next();
-			System.out.println(item.getValue().id + "  " + item.getValue().name + "\t\t" + item.getValue().getPrice());
+			System.out.println(item.getValue().id + "  " + item.getValue().name + "\t" + item.getValue().getPrice());
 			System.out.println("   - " + item.getValue().description);
 			System.out.println();
 		}

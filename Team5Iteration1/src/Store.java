@@ -39,7 +39,7 @@ public class Store {
 		// Responsibility: DOING - showing the menu catalog to the user
 		System.out.println(" WELCOME TO CORONARY CASTLE");
 		System.out.println("----------------------------");
-		Iterator<Entry<Integer, ItemDetails>> itemsIt = getCatalog().items.entrySet().iterator();
+		Iterator<Entry<Integer, ItemDetails>> itemsIt = getCatalog().getIterator();
 		while(itemsIt.hasNext()) {
 			Entry<Integer, ItemDetails> item = itemsIt.next();
 			System.out.println(item.getValue().id + "  " + item.getValue().name + "\t" + item.getValue().getPrice());

@@ -5,7 +5,6 @@
  * Fall 2016, Florida Institute of Technology
  */
 
-
 public class MenuItem {
 	public ItemDetails details;
 	public int quantity;

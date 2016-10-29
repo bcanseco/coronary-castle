@@ -9,13 +9,15 @@ public class ItemDetails {
 	public int id;
 	public String name;
 	public String description;
+	public EItemType type;
 	
 	private double price;
 	
-	public ItemDetails(int id, String name, String description, double price) {
+	public ItemDetails(int id, String name, String description, EItemType type, double price) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.type = type;
 		this.price = price;
 	}
 	
@@ -23,4 +25,8 @@ public class ItemDetails {
 		// Responsibility: KNOWING - the price of the item in the menu 
 		return price;
 	}
+}
+
+enum EItemType {
+	Entree, Topping, Drink
 }

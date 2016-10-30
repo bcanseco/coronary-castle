@@ -13,61 +13,33 @@ public class Main {
 		
 		Store store = new Store();
 		Register register = store.getRegister();
-		MenuCatalog catalog = store.getCatalog();
-		
-		catalog.addItem(new ItemDetails(1, "Bypass", "Half-pound burger", EItemType.Entree, 3.50));
-		catalog.addItem(new ItemDetails(2, "Double Bypass", "1 pound burger.", EItemType.Entree, 6.50));
-		catalog.addItem(new ItemDetails(3, "Triple Bypass", "1.5 pound burger.", EItemType.Entree, 8.50));
-		catalog.addItem(new ItemDetails(4, "Quadruple Bypass", "2 pound burger.", EItemType.Entree, 9.75));
-		catalog.addItem(new ItemDetails(5, "Ham", "A ham slice topping.", EItemType.Topping, 1.00));
-		catalog.addItem(new ItemDetails(6, "Egg", "A fried egg topping.", EItemType.Topping, 0.75));
-		catalog.addItem(new ItemDetails(7, "Cheese", "A cheese slice topping.", EItemType.Topping, 0.50));
-		catalog.addItem(new ItemDetails(8, "Onion Rings", "Onion rings on the sandwich.", EItemType.Topping, 0.75));
-		catalog.addItem(new ItemDetails(9, "French Fries", "Fries on the sandwich.", EItemType.Topping, 0.75));
-		catalog.addItem(new ItemDetails(10, "Mustard", "Nothing goes better on a dog.", EItemType.Topping, 0.00));
-		catalog.addItem(new ItemDetails(11, "Mayonnaise", "Not an instrument.", EItemType.Topping, 0.00));
-		catalog.addItem(new ItemDetails(12, "Ketchup", "Can't go wrong with ketchup.", EItemType.Topping, 0.00));
-		catalog.addItem(new ItemDetails(13, "Lettuce", "You want a diet coke too?", EItemType.Topping, 0.00));
-		catalog.addItem(new ItemDetails(14, "Tomato", "Might as well get ketchup.", EItemType.Topping, 0.00));
-		catalog.addItem(new ItemDetails(15, "Onion", "America's finest news source.", EItemType.Topping, 0.00));
-		catalog.addItem(new ItemDetails(16, "Pickle", "Goes great with the bypass.", EItemType.Topping, 0.00));
-		catalog.addItem(new ItemDetails(17, "Jalapeno Peppers", "Don't beathe this.", EItemType.Topping, 0.00));
-		catalog.addItem(new ItemDetails(18, "32oz Soda", "Quench your thirst.", EItemType.Drink, 2.00));
-		catalog.addItem(new ItemDetails(19, "48oz Soda", "Never thirst again.", EItemType.Drink, 3.00));
-		catalog.addItem(new ItemDetails(20, "Bladder Buster", "A 64 ounce bad decision.", EItemType.Drink, 4.00));
+		//MenuCatalog catalog = store.getCatalog();
 		
 		store.showMenu();
-		System.out.println("CMDs:  (N)ew Sale  |  E(X)it\r\n");
-		char opt = getChoice();
+		System.out.println("CMDs:  (N)ew Sale  |  E(X)it");
+		char opt = getCommand();
 		while(opt != 'x') {
 			if(opt == 'n') {
 				System.out.println("Created new sale.");
 				System.out.println("Enter 'c' at any time to complete sale.");
 				register.newSale();
 				while(opt != 'c') {
-					opt = getChoice("item");
-					if(opt == 'c') break;
-					while(!Character.isDigit(opt)) {
-						System.out.println("Invalid menu item.");
-						opt = getChoice("item");
+					int itemid = getIdOrQty("item");
+					if(itemid == Integer.MIN_VALUE) break;
+					int quantity = getIdOrQty("quantity");
+					if(quantity == Integer.MIN_VALUE) break;
+					if(quantity > 0) {
+						register.enterItem(itemid, quantity);
+						System.out.println("Added " + quantity + " of item #" + itemid);
 					}
-					char quantity = getChoice("quantity");
-					while(!Character.isDigit(quantity)) {
-						System.out.println("Invalid menu item.");
-						opt = getChoice("quantity");
-					}
-					int itemid = Character.getNumericValue(opt);
-					int qty = Character.getNumericValue(quantity);
-					register.enterItem(itemid, qty);
-					System.out.println("Added " + qty + " of item #" + itemid);
 					System.out.println("Current total: " + register.currentSale.getTotal());
 				}
 				System.out.println("Completed sale.");
 				System.out.println("CMDs:  Make (P)ayment  |  (C)ancel sale  |  E(X)it");
-				opt = getChoice();
+				opt = getCommand();
 				while(opt != 'p' && opt != 'c' && opt != 'x') {
 					System.out.println("Invalid option");
-					opt = getChoice();
+					opt = getCommand();
 				}
 				if(opt == 'c') { /*move on*/ }
 				else if(opt == 'x') break;
@@ -75,10 +47,10 @@ public class Main {
 					double amountRemaining = register.currentSale.getTotal();
 					while(amountRemaining>0) {
 						System.out.println("Payment: C(a)sh  |  C(r)edit");
-						opt = getChoice("payment");
+						opt = getCommand("payment");
 						while(opt != 'a' && opt != 'r') {
 							System.out.println("Invalid option.");
-							opt = getChoice("payment");
+							opt = getCommand("payment");
 						}
 						boolean payType;
 						String payTypeName;
@@ -106,21 +78,21 @@ public class Main {
 				System.out.println("Invalid option.");
 			}
 			System.out.println("CMDs:  (N)ew Sale  |  E(X)it");
-			opt = getChoice();
+			opt = getCommand();
 		}
 		System.out.println("Exiting.");
 	}
 	
 	// Responsibility: Utility methods to get user input, used only for Main procedure
-	private static char getChoice(String word) {
+	private static char getCommand(String word) {
 		Scanner scn = new Scanner(System.in);
 		System.out.print("Select "+word+" => ");
 		char opt = scn.next().toLowerCase().charAt(0);
 		//scn.close();
 		return opt;
 	}
-	private static char getChoice() {
-		return getChoice("option");
+	private static char getCommand() {
+		return getCommand("command");
 	}
 	private static double getMoneyAmount() {
 		Scanner scn = new Scanner(System.in);
@@ -138,4 +110,20 @@ public class Main {
 		}
 		return amount;
 	}
+	private static int getIdOrQty(String word) {
+		Scanner scn = new Scanner(System.in);
+		while(true) {
+			System.out.print("Enter " + word + " => ");
+			String in = scn.next().toLowerCase();
+			if(isNumeric(in)) return Integer.parseInt(in);
+			else if(in.charAt(0)=='c') return Integer.MIN_VALUE;
+			else {
+				System.out.println("Invalid number.");
+				continue;
+			}
+		}
+	}
+	private static boolean isNumeric(String s) {  
+	    return s.matches("[-+]?\\d*\\.?\\d+");  
+	}  
 }

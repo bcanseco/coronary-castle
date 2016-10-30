@@ -1,7 +1,3 @@
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-
 /*
  * Group 5
  * Project Assignment 5
@@ -9,6 +5,7 @@ import java.time.ZonedDateTime;
  * Fall 2016, Florida Institute of Technology
  */
 
+import java.time.ZonedDateTime;
 
 public class Register {
 	public Sale currentSale;

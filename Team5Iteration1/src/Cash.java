@@ -5,7 +5,6 @@
  * Fall 2016, Florida Institute of Technology
  */
 
-
 public class Cash implements Payment {
 	private double amount;
 	

@@ -5,11 +5,9 @@
  * Fall 2016, Florida Institute of Technology
  */
 
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public class MenuCatalog {
 	private static MenuCatalog instance;

@@ -5,7 +5,6 @@
  * Fall 2016, Florida Institute of Technology
  */
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

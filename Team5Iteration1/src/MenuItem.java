@@ -18,4 +18,8 @@ public class MenuItem {
 		// Responsibility: KNOWING - the total price of the order without sales tax
 		return details.getPrice() * quantity;
 	}
+	
+	public String getName(boolean condimentsExist) {
+		return condimentsExist ? "Custom " + details.name : details.name;
+	}
 }

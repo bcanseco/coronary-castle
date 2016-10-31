@@ -10,6 +10,7 @@ import java.time.ZonedDateTime;
 public class Register {
 	public Sale currentSale;
 	public MenuCatalog catalog;
+	public MenuItem currentItem;
 	
 	private static Register instance;
 	
@@ -35,10 +36,24 @@ public class Register {
 		currentSale.becomeComplete();
 	}
 	
+	public void enterItem(int id) {
+		enterItem(id, 1);
+	}
+	
 	public void enterItem(int id, int quantity) {
 		// Responsibility: DOING - the addition of an item to the Sale order
 		ItemDetails desc = catalog.getItemDetails(id);
-		currentSale.makeMenuItem(desc, quantity);
+		currentItem = new MenuItem(desc, quantity);
+	}
+	
+	public void addCondiment(ItemDetails desc) {
+		CondimentDecorator condiment = new CondimentDecorator(desc, 1);
+		condiment.decorate(currentItem);
+		currentItem = condiment;
+	}
+	
+	public void addCurrentItemToSale() {
+		currentSale.addMenuItem(currentItem);
 	}
 	
 	public void makePayment(boolean type, double amount) {
@@ -59,7 +74,7 @@ public class Register {
 						"---------------------------";
 		StringBuilder items = new StringBuilder();
 		for(MenuItem mi : currentSale.orderedItems) {
-			items.append(mi.details.name + "\t\t" + mi.quantity + "  $" + mi.quantity*mi.details.getPrice() + "\r\n");
+			items.append(mi.getName(false) + "\t\t" + mi.quantity + "  $" + mi.getSubtotal() + "\r\n");
 		}
 		String footer = "---------------------------\r\n" +
 						"\t   Total: $" + currentSale.getTotal() + "\r\n" +

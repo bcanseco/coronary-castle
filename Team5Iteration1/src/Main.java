@@ -13,7 +13,7 @@ public class Main {
 		
 		Store store = new Store();
 		Register register = store.getRegister();
-		//MenuCatalog catalog = store.getCatalog();
+		MenuCatalog catalog = store.getCatalog();
 		
 		store.showMenu();
 		System.out.println("CMDs:  (N)ew Sale  |  E(X)it");
@@ -26,10 +26,33 @@ public class Main {
 				while(opt != 'c') {
 					int itemid = getIdOrQty("item");
 					if(itemid == Integer.MIN_VALUE) break;
+					if (itemid <= 0) {
+						System.out.println("We don't have that item number!");
+						continue;
+					}
+					if (catalog.getItemDetails(itemid).type == EItemType.Topping) {
+						System.out.println("Please pick an entree first.");
+						continue;
+					}
+					
 					int quantity = getIdOrQty("quantity");
 					if(quantity == Integer.MIN_VALUE) break;
 					if(quantity > 0) {
 						register.enterItem(itemid, quantity);
+						if (register.currentItem.details.type != EItemType.Drink) {
+							System.out.println("Any condiments for that " + register.currentItem.details.name + "?");
+							int condimentid;
+							while ((condimentid = getIdOrQty("condiment")) != 0) {
+								if (condimentid < 5 || condimentid > 17) {
+									System.out.println("We don't have that condiment number! Try again or enter 0 to leave as is.");
+									continue;
+								}
+								register.addCondiment(catalog.getItemDetails(condimentid));
+								System.out.println("Successfully added " + register.currentItem.details.name + "."
+										+ "\nAny others? Enter 0 to leave as is.");
+							}
+						}
+						register.addCurrentItemToSale();
 						System.out.println("Added " + quantity + " of item #" + itemid);
 					}
 					System.out.println("Current total: " + register.currentSale.getTotal());

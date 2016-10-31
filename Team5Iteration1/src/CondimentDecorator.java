@@ -20,6 +20,10 @@ public class CondimentDecorator extends MenuItem {
 	@Override
 	public double getSubtotal() {
 		// Responsibility: KNOWING - the total price of the base item + decorators
-		return details.getPrice() + menuItem.details.getPrice();
+		return details.getPrice() + menuItem.getSubtotal();
+	}
+	
+	public String getName(boolean condimentsExist) {
+		return menuItem.getName(true);
 	}
 }

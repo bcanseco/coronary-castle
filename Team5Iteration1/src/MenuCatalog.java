@@ -63,6 +63,7 @@ public class MenuCatalog {
 	}
 	
 	public List<ItemDetails> getEntrees() {
+		// Responsibility: KNOWING the items in the menu that are entrees
 		List<ItemDetails> entreeList = new ArrayList<ItemDetails>();
 		Iterator<ItemDetails> eIt = getInstance().getIterator();
 		while(eIt.hasNext()) {
@@ -74,6 +75,7 @@ public class MenuCatalog {
 	}
 	
 	public List<ItemDetails> getToppingsNotFree() {
+		// Responsibility: KNOWING the items in the menu that are toppings and aren't free
 		List<ItemDetails> list = new ArrayList<ItemDetails>();
 		Iterator<ItemDetails> eIt = getInstance().getIterator();
 		while(eIt.hasNext()) {
@@ -85,6 +87,7 @@ public class MenuCatalog {
 	}
 	
 	public List<ItemDetails> getToppingsFree() {
+		// Responsibility: KNOWING the items in the menu that are toppings and are free
 		List<ItemDetails> list = new ArrayList<ItemDetails>();
 		Iterator<ItemDetails> eIt = getInstance().getIterator();
 		while(eIt.hasNext()) {
@@ -96,6 +99,7 @@ public class MenuCatalog {
 	}
 	
 	public List<ItemDetails> getDrinks() {
+		// Responsibility: KNOWING the items in the menu that are drinks
 		List<ItemDetails> list = new ArrayList<ItemDetails>();
 		Iterator<ItemDetails> eIt = getInstance().getIterator();
 		while(eIt.hasNext()) {

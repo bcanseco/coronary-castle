@@ -24,6 +24,12 @@ public class CondimentDecorator extends MenuItem {
 	}
 	
 	public String getName(boolean condimentsExist) {
+		// Responsibility: KNOWING - the name of the condiment
 		return menuItem.getName(true);
+	}
+	
+	public int getQuantity() {
+		// Responsibility: KNOWING - the quantity of the item being modified in the order line item.
+		return menuItem.getQuantity();
 	}
 }

@@ -20,6 +20,12 @@ public class MenuItem {
 	}
 	
 	public String getName(boolean condimentsExist) {
-		return condimentsExist ? "Custom " + details.name : details.name;
+		// Responsibility: KNOWING - the name of the item in the order
+		return condimentsExist ? "Cstm. " + details.name : details.name;
+	}
+
+	public int getQuantity() {
+		// Responsibility: KNOWING - how many of the item are in the order line item
+		return this.quantity;
 	}
 }

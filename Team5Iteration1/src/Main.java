@@ -48,7 +48,7 @@ public class Main {
 									continue;
 								}
 								register.addCondiment(catalog.getItemDetails(condimentid));
-								System.out.println("Successfully added " + register.currentItem.details.name + "."
+								System.out.println("Added " + register.currentItem.details.name + "."
 										+ "\nAny others? Enter 0 to leave as is.");
 							}
 						}
@@ -106,7 +106,7 @@ public class Main {
 		System.out.println("Exiting.");
 	}
 	
-	// Responsibility: Utility methods to get user input, used only for Main procedure
+	// Responsibility: Everything below are utility methods to get user input, used only for Main procedure
 	private static char getCommand(String word) {
 		Scanner scn = new Scanner(System.in);
 		System.out.print("Select "+word+" => ");

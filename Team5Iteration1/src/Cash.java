@@ -5,6 +5,7 @@
  * Fall 2016, Florida Institute of Technology
  */
 
+// Responsibility: Documented in the Payment interface
 public class Cash implements Payment {
 	private double amount;
 	

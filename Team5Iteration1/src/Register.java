@@ -37,6 +37,7 @@ public class Register {
 	}
 	
 	public void enterItem(int id) {
+		// Responsibility: DOING - the adding of ONE of the item to the order
 		enterItem(id, 1);
 	}
 	
@@ -47,12 +48,14 @@ public class Register {
 	}
 	
 	public void addCondiment(ItemDetails desc) {
+		// Responsibility: DOING - applying the condiment decorators to the item being ordered
 		CondimentDecorator condiment = new CondimentDecorator(desc, 1);
 		condiment.decorate(currentItem);
 		currentItem = condiment;
 	}
 	
 	public void addCurrentItemToSale() {
+		// Responsibility: DOING - perform the act of adding the current item being ordered to the sale
 		currentSale.addMenuItem(currentItem);
 	}
 	
@@ -74,7 +77,7 @@ public class Register {
 						"---------------------------";
 		StringBuilder items = new StringBuilder();
 		for(MenuItem mi : currentSale.orderedItems) {
-			items.append(mi.getName(false) + "\t\t" + mi.quantity + "  $" + mi.getSubtotal() + "\r\n");
+			items.append(mi.getName(false) + "\r\n\t\t" + mi.getQuantity() + "  $" + mi.getSubtotal() + "\r\n");
 		}
 		String footer = "---------------------------\r\n" +
 						"\t   Total: $" + currentSale.getTotal() + "\r\n" +

@@ -13,6 +13,7 @@ import java.util.List;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -33,6 +34,8 @@ public class UI {
 	private JFrame frmProjectAssignment;
 	private JPanel Landing;
 	private JPanel Order;
+	private JPanel toppingsBorder;
+	private JPanel menuBorder;
 	
 	public static Store store;
 	public static Register register;
@@ -78,11 +81,6 @@ public class UI {
 		List<ItemDetails> menuItems = catalog.getEntrees();
 		menuItems.addAll(catalog.getDrinks());
 		JButton[] menuBtns = new JButton[menuItems.size()];
-		
-		JPanel menuBorder = new JPanel();
-		menuBorder.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Menu", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		menuBorder.setBounds(10, 11, 169, 249);
-		Order.add(menuBorder);
 
 		for(int i = 0; i < menuItems.size(); i++) {
 			ItemDetails item = menuItems.get(i);
@@ -91,7 +89,7 @@ public class UI {
 			menuBtns[i] = new JButton(item.name);
 			menuBtns[i].setToolTipText(item.description);
 			menuBtns[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
-			menuBtns[i].setBounds(33, 110, 110, 43);
+			menuBtns[i].setPreferredSize(new Dimension(150, 25));
 			menuBtns[i].setFocusPainted(false);
 			menuBorder.add(menuBtns[i]);
 		}
@@ -105,11 +103,6 @@ public class UI {
 		toppingItems.addAll(catalog.getToppingsNotFree());
 		JButton[] toppingBtns = new JButton[toppingItems.size()];
 		
-		JPanel toppingsBorder = new JPanel();
-		toppingsBorder.setBorder(new TitledBorder(null, "Toppings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		toppingsBorder.setBounds(189, 11, 245, 127);
-		Order.add(toppingsBorder);
-
 		for(int i = 0; i < toppingItems.size(); i++) {
 			ItemDetails item = toppingItems.get(i);
 			System.out.println();
@@ -131,7 +124,7 @@ public class UI {
 		frmProjectAssignment.setIconImage(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/resources/burg.png")));
 		frmProjectAssignment.setTitle("Coronary Castle");
 		frmProjectAssignment.setResizable(false);
-		frmProjectAssignment.setBounds(100, 100, 450, 300);
+		frmProjectAssignment.setBounds(100, 100, 545, 300);
 		frmProjectAssignment.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProjectAssignment.setLocationRelativeTo(null);
 		frmProjectAssignment.getContentPane().setLayout(new CardLayout(0, 0));
@@ -143,7 +136,7 @@ public class UI {
 		
 		JLabel lblBurg = new JLabel("Burger");
 		lblBurg.setIcon(new ImageIcon(UI.class.getResource("/resources/burg.png")));
-		lblBurg.setBounds(138, 14, 293, 242);
+		lblBurg.setBounds(138, 14, 391, 242);
 		Landing.add(lblBurg);
 		
 		JButton btnStart = new JButton("Start");
@@ -203,14 +196,26 @@ public class UI {
 		frmProjectAssignment.getContentPane().add(Order, "order");
 		Order.setLayout(null);
 		
+		toppingsBorder = new JPanel();
+		toppingsBorder.setBorder(new TitledBorder(null, "Toppings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		toppingsBorder.setBounds(189, 11, 340, 159);
+		Order.add(toppingsBorder);
+		
+		menuBorder = new JPanel();
+		menuBorder.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Menu", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		menuBorder.setBounds(10, 11, 169, 249);
+		Order.add(menuBorder);
+		
 		//Menu items and toppings panels created in their respective functions
 		
 		JPanel toolsBorder = new JPanel();
 		toolsBorder.setBorder(new TitledBorder(null, "Tools", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		toolsBorder.setBounds(189, 149, 245, 111);
+		toolsBorder.setBounds(189, 181, 340, 79);
 		Order.add(toolsBorder);
+		toolsBorder.setLayout(null);
 		
 		JButton btnNewOrder = new JButton("Start New Order");
+		btnNewOrder.setBounds(38, 29, 138, 27);
 		btnNewOrder.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewOrder.setToolTipText("Credits and attribution");
 		btnNewOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -218,6 +223,7 @@ public class UI {
 		toolsBorder.add(btnNewOrder);
 		
 		JButton btnEndOrder = new JButton("Finish Order");
+		btnEndOrder.setBounds(186, 29, 109, 27);
 		btnEndOrder.setHorizontalAlignment(SwingConstants.LEFT);
 		btnEndOrder.setToolTipText("Credits and attribution");
 		btnEndOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));

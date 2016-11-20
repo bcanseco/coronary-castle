@@ -8,8 +8,11 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -23,12 +26,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.SwingConstants;
 
 public class UI {
 
 	private JFrame frmProjectAssignment;
 	private JPanel Landing;
 	private JPanel Order;
+	
+	public static Store store;
+	public static Register register;
+	public static MenuCatalog catalog;
 
 	/**
 	 * Launch the application.
@@ -39,6 +47,11 @@ public class UI {
 				try {
 					UI window = new UI();
 					window.frmProjectAssignment.setVisible(true);
+					
+					store = new Store();
+					register = store.getRegister();
+					catalog = store.getCatalog();
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,6 +71,58 @@ public class UI {
 		initialize();
 	}
 
+	/**
+	 * Generate buttons based off MenuCatalog entrees/drinks
+	 */
+	private void createMenuButtons() {
+		List<ItemDetails> menuItems = catalog.getEntrees();
+		menuItems.addAll(catalog.getDrinks());
+		JButton[] menuBtns = new JButton[menuItems.size()];
+		
+		JPanel menuBorder = new JPanel();
+		menuBorder.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Menu", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		menuBorder.setBounds(10, 11, 169, 249);
+		Order.add(menuBorder);
+
+		for(int i = 0; i < menuItems.size(); i++) {
+			ItemDetails item = menuItems.get(i);
+			System.out.println();
+			System.out.println(item.name);
+			menuBtns[i] = new JButton(item.name);
+			menuBtns[i].setToolTipText(item.description);
+			menuBtns[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
+			menuBtns[i].setBounds(33, 110, 110, 43);
+			menuBtns[i].setFocusPainted(false);
+			menuBorder.add(menuBtns[i]);
+		}
+	}
+	
+	/**
+	 * Generate buttons based off MenuCatalog toppings
+	 */
+	private void createToppingButtons() {
+		List<ItemDetails> toppingItems = catalog.getToppingsFree();
+		toppingItems.addAll(catalog.getToppingsNotFree());
+		JButton[] toppingBtns = new JButton[toppingItems.size()];
+		
+		JPanel toppingsBorder = new JPanel();
+		toppingsBorder.setBorder(new TitledBorder(null, "Toppings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		toppingsBorder.setBounds(189, 11, 245, 127);
+		Order.add(toppingsBorder);
+
+		for(int i = 0; i < toppingItems.size(); i++) {
+			ItemDetails item = toppingItems.get(i);
+			System.out.println();
+			System.out.println(item.name);
+			toppingBtns[i] = new JButton(item.name);
+			toppingBtns[i].setToolTipText(item.description);
+			toppingBtns[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
+			toppingBtns[i].setBounds(33, 110, 110, 43);
+			toppingBtns[i].setFocusPainted(false);
+			toppingsBorder.add(toppingBtns[i]);
+		}
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -90,6 +155,8 @@ public class UI {
 			public void actionPerformed(ActionEvent arg0) {
 				Landing.setVisible(false);
 				Order.setVisible(true);
+				createMenuButtons();
+				createToppingButtons();
 			}
 		});
 		Landing.add(btnStart);
@@ -136,19 +203,25 @@ public class UI {
 		frmProjectAssignment.getContentPane().add(Order, "order");
 		Order.setLayout(null);
 		
-		JPanel menuBorder = new JPanel();
-		menuBorder.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Menu", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		menuBorder.setBounds(10, 11, 169, 249);
-		Order.add(menuBorder);
-		
-		JPanel toppingsBorder = new JPanel();
-		toppingsBorder.setBorder(new TitledBorder(null, "Toppings", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		toppingsBorder.setBounds(189, 11, 245, 127);
-		Order.add(toppingsBorder);
+		//Menu items and toppings panels created in their respective functions
 		
 		JPanel toolsBorder = new JPanel();
 		toolsBorder.setBorder(new TitledBorder(null, "Tools", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		toolsBorder.setBounds(189, 149, 245, 111);
 		Order.add(toolsBorder);
+		
+		JButton btnNewOrder = new JButton("Start New Order");
+		btnNewOrder.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNewOrder.setToolTipText("Credits and attribution");
+		btnNewOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnNewOrder.setFocusPainted(false);
+		toolsBorder.add(btnNewOrder);
+		
+		JButton btnEndOrder = new JButton("Finish Order");
+		btnEndOrder.setHorizontalAlignment(SwingConstants.LEFT);
+		btnEndOrder.setToolTipText("Credits and attribution");
+		btnEndOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnEndOrder.setFocusPainted(false);
+		toolsBorder.add(btnEndOrder);
 	}
 }

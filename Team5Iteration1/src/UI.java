@@ -28,6 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.SwingConstants;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
 
 public class UI {
 
@@ -40,6 +42,8 @@ public class UI {
 	public static Store store;
 	public static Register register;
 	public static MenuCatalog catalog;
+	
+	public static boolean condimentsEnabled;
 
 	/**
 	 * Launch the application.
@@ -54,6 +58,8 @@ public class UI {
 					store = new Store();
 					register = store.getRegister();
 					catalog = store.getCatalog();
+					
+					condimentsEnabled = false;
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -84,13 +90,24 @@ public class UI {
 
 		for(int i = 0; i < menuItems.size(); i++) {
 			ItemDetails item = menuItems.get(i);
-			System.out.println();
-			System.out.println(item.name);
 			menuBtns[i] = new JButton(item.name);
 			menuBtns[i].setToolTipText(item.description);
 			menuBtns[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
 			menuBtns[i].setPreferredSize(new Dimension(150, 25));
 			menuBtns[i].setFocusPainted(false);
+			menuBtns[i].setEnabled(false);
+			menuBtns[i].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (item.type == EItemType.Entree && !condimentsEnabled) {
+						int length = toppingsBorder.getComponentCount();
+						for (int i = 0; i < length; i++) {
+							toppingsBorder.getComponents()[i].setEnabled(true);
+						}
+						
+						condimentsEnabled = true;
+					}
+				}
+			});
 			menuBorder.add(menuBtns[i]);
 		}
 	}
@@ -105,13 +122,12 @@ public class UI {
 		
 		for(int i = 0; i < toppingItems.size(); i++) {
 			ItemDetails item = toppingItems.get(i);
-			System.out.println();
-			System.out.println(item.name);
 			toppingBtns[i] = new JButton(item.name);
 			toppingBtns[i].setToolTipText(item.description);
 			toppingBtns[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
 			toppingBtns[i].setBounds(33, 110, 110, 43);
 			toppingBtns[i].setFocusPainted(false);
+			toppingBtns[i].setEnabled(false);
 			toppingsBorder.add(toppingBtns[i]);
 		}
 	}
@@ -124,7 +140,7 @@ public class UI {
 		frmProjectAssignment.setIconImage(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/resources/burg.png")));
 		frmProjectAssignment.setTitle("Coronary Castle");
 		frmProjectAssignment.setResizable(false);
-		frmProjectAssignment.setBounds(100, 100, 545, 300);
+		frmProjectAssignment.setBounds(100, 100, 545, 399);
 		frmProjectAssignment.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProjectAssignment.setLocationRelativeTo(null);
 		frmProjectAssignment.getContentPane().setLayout(new CardLayout(0, 0));
@@ -134,17 +150,12 @@ public class UI {
 		frmProjectAssignment.getContentPane().add(Landing, "landing");
 		Landing.setLayout(null);
 		
-		JLabel lblBurg = new JLabel("Burger");
-		lblBurg.setIcon(new ImageIcon(UI.class.getResource("/resources/burg.png")));
-		lblBurg.setBounds(138, 14, 391, 242);
-		Landing.add(lblBurg);
-		
-		JButton btnStart = new JButton("Start");
-		btnStart.setToolTipText("Begin a new sale");
-		btnStart.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnStart.setBounds(33, 60, 110, 43);
-		btnStart.setFocusPainted(false);
-		btnStart.addActionListener(new ActionListener() {
+		JButton btnEnter = new JButton("Enter");
+		btnEnter.setToolTipText("View the menu and order");
+		btnEnter.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnEnter.setBounds(33, 117, 110, 43);
+		btnEnter.setFocusPainted(false);
+		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Landing.setVisible(false);
 				Order.setVisible(true);
@@ -152,12 +163,12 @@ public class UI {
 				createToppingButtons();
 			}
 		});
-		Landing.add(btnStart);
+		Landing.add(btnEnter);
 		
 		JButton btnAbout = new JButton("About");
 		btnAbout.setToolTipText("Credits and attribution");
 		btnAbout.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnAbout.setBounds(33, 110, 110, 43);
+		btnAbout.setBounds(33, 167, 110, 43);
 		btnAbout.setFocusPainted(false);
 		btnAbout.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -178,7 +189,7 @@ public class UI {
 		JButton btnExit = new JButton("Exit");
 		btnExit.setToolTipText("Have a Coronary day!");
 		btnExit.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnExit.setBounds(33, 160, 110, 43);
+		btnExit.setBounds(33, 217, 110, 43);
 		btnExit.setFocusPainted(false);
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -189,8 +200,14 @@ public class UI {
 		
 		JPanel welcomeBorder = new JPanel();
 		welcomeBorder.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Welcome", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		welcomeBorder.setBounds(10, 7, 424, 253);
+		welcomeBorder.setBounds(10, 7, 519, 352);
 		Landing.add(welcomeBorder);
+		welcomeBorder.setLayout(null);
+		
+		JLabel lblBurg = new JLabel("Burger");
+		lblBurg.setBounds(127, -22, 501, 434);
+		welcomeBorder.add(lblBurg);
+		lblBurg.setIcon(new ImageIcon(UI.class.getResource("/resources/burg.png")));
 		
 		Order = new JPanel();
 		frmProjectAssignment.getContentPane().add(Order, "order");
@@ -210,24 +227,53 @@ public class UI {
 		
 		JPanel toolsBorder = new JPanel();
 		toolsBorder.setBorder(new TitledBorder(null, "Tools", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		toolsBorder.setBounds(189, 181, 340, 79);
+		toolsBorder.setBounds(10, 271, 169, 88);
 		Order.add(toolsBorder);
 		toolsBorder.setLayout(null);
 		
-		JButton btnNewOrder = new JButton("Start New Order");
-		btnNewOrder.setBounds(38, 29, 138, 27);
-		btnNewOrder.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewOrder.setToolTipText("Credits and attribution");
-		btnNewOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnNewOrder.setFocusPainted(false);
-		toolsBorder.add(btnNewOrder);
-		
 		JButton btnEndOrder = new JButton("Finish Order");
-		btnEndOrder.setBounds(186, 29, 109, 27);
+		btnEndOrder.setBounds(30, 50, 109, 27);
 		btnEndOrder.setHorizontalAlignment(SwingConstants.LEFT);
-		btnEndOrder.setToolTipText("Credits and attribution");
 		btnEndOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnEndOrder.setFocusPainted(false);
+		btnEndOrder.setEnabled(false);
 		toolsBorder.add(btnEndOrder);
+		
+		JButton btnNewOrder = new JButton("Start New Order");
+		btnNewOrder.setBounds(15, 18, 138, 27);
+		btnNewOrder.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNewOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnNewOrder.setFocusPainted(false);
+		btnNewOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnEndOrder.setEnabled(true);
+				btnNewOrder.setEnabled(false);
+				
+				int length = menuBorder.getComponentCount();
+				for (int i = 0; i < length; i++) {
+					menuBorder.getComponents()[i].setEnabled(true);
+				}
+			}
+		});
+		toolsBorder.add(btnNewOrder);
+		
+		JPanel yourOrderBorder = new JPanel();
+		yourOrderBorder.setBorder(new TitledBorder(null, "Your Order", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		yourOrderBorder.setBounds(189, 181, 340, 178);
+		Order.add(yourOrderBorder);
+		yourOrderBorder.setLayout(null);
+		
+		JList list = new JList();
+//		list.setModel(new AbstractListModel() {
+//			String[] values = new String[] {"adsasdas", "das", "da", "sd", "a", "sd", "a"};
+//			public int getSize() {
+//				return values.length;
+//			}
+//			public Object getElementAt(int index) {
+//				return values[index];
+//			}
+//		});
+		list.setBounds(10, 21, 320, 146);
+		yourOrderBorder.add(list);
 	}
 }

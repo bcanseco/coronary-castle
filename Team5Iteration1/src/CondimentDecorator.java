@@ -32,4 +32,13 @@ public class CondimentDecorator extends MenuItem {
 		// Responsibility: KNOWING - the quantity of the item being modified in the order line item.
 		return menuItem.getQuantity();
 	}
+	
+	public void setQuantity(int quantity) {
+		menuItem.setQuantity(quantity);
+	}
+	
+	@Override
+	public String toString() {
+		return getName(true);
+	}
 }

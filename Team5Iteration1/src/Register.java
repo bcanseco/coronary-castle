@@ -54,9 +54,11 @@ public class Register {
 		currentItem = condiment;
 	}
 	
-	public void addCurrentItemToSale() {
+	public void addCurrentItemToSale(int updatedQuantity) {
 		// Responsibility: DOING - perform the act of adding the current item being ordered to the sale
+		currentItem.setQuantity(updatedQuantity);
 		currentSale.addMenuItem(currentItem);
+		currentItem = null;
 	}
 	
 	public void makePayment(boolean type, double amount) {

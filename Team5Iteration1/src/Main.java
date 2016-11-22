@@ -52,7 +52,7 @@ public class Main {
 										+ "\nAny others? Enter 0 to leave as is.");
 							}
 						}
-						register.addCurrentItemToSale();
+						register.addCurrentItemToSale(register.currentItem.getQuantity());
 						System.out.println("Added " + quantity + " of item #" + itemid);
 					}
 					System.out.println("Current total: " + register.currentSale.getTotal());

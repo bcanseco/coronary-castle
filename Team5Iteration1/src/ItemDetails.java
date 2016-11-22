@@ -25,6 +25,11 @@ public class ItemDetails {
 		// Responsibility: KNOWING - the price of the item in the menu 
 		return price;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }
 
 enum EItemType {

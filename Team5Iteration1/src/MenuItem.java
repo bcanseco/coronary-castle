@@ -7,7 +7,7 @@
 
 public class MenuItem {
 	public ItemDetails details;
-	public int quantity;
+	private int quantity;
 	
 	public MenuItem(ItemDetails details, int quantity) {
 		this.quantity = quantity;
@@ -21,11 +21,20 @@ public class MenuItem {
 	
 	public String getName(boolean condimentsExist) {
 		// Responsibility: KNOWING - the name of the item in the order
-		return condimentsExist ? "Cstm. " + details.name : details.name;
+		return quantity + " " + (condimentsExist ? "Cust. " + details.name : details.name);
 	}
 
 	public int getQuantity() {
 		// Responsibility: KNOWING - how many of the item are in the order line item
 		return this.quantity;
+	}
+	
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
+	@Override
+	public String toString() {
+		return getName(false);
 	}
 }

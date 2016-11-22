@@ -86,7 +86,7 @@ public class Register {
 			receiptData.add(String.format("%-22s %3s %7s", 
 					item.getName(false), item.getQuantity(), String.format("%.2f", item.getSubtotal())));
 		}
-		receiptData.add(String.format("%22s %3s %7s", "Total:", 
+		receiptData.add("\n" + String.format("%22s %3s %7s", "Total:", 
 				total, String.format("%.2f", currentSale.getTotal())));
 		receiptData.add(String.format("%22s %11s", "Paid:", String.format("%.2f", currentSale.payment.getAmount())));
 		receiptData.add(String.format("%22s %11s", "Change:", String.format("%.2f", currentSale.getChange())));

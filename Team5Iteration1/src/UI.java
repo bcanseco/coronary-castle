@@ -497,7 +497,7 @@ public class UI {
 		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(UI.class.getResource("/resources/cards.png")));
+		lblNewLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/resources/cards.png"))));
 		lblNewLabel.setBounds(10, 19, 229, 52);
 		panel_1.add(lblNewLabel);
 		

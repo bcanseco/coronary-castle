@@ -22,12 +22,12 @@ public class MenuCatalog {
 		// Responsibility: KNOWING - the menu catalog information 
 		if (instance == null) {
 			instance = new MenuCatalog();
-			instance.addItem(new ItemDetails(1, "Bypass\t", "Half-pound burger", EItemType.Entree, 3.50));
+			instance.addItem(new ItemDetails(1, "Bypass", "Half-pound burger", EItemType.Entree, 3.50));
 			instance.addItem(new ItemDetails(2, "Double Bypass", "1 pound burger.", EItemType.Entree, 6.50));
 			instance.addItem(new ItemDetails(3, "Triple Bypass", "1.5 pound burger.", EItemType.Entree, 8.50));
 			instance.addItem(new ItemDetails(4, "Quadruple Bypass", "2 pound burger.", EItemType.Entree, 9.75));
-			instance.addItem(new ItemDetails(5, "Ham \t", "A ham slice topping.", EItemType.Topping, 1.00));
-			instance.addItem(new ItemDetails(6, "Egg \t", "A fried egg topping.", EItemType.Topping, 0.75));
+			instance.addItem(new ItemDetails(5, "Ham", "A ham slice topping.", EItemType.Topping, 1.00));
+			instance.addItem(new ItemDetails(6, "Egg", "A fried egg topping.", EItemType.Topping, 0.75));
 			instance.addItem(new ItemDetails(7, "Cheese", "A cheese slice topping.", EItemType.Topping, 0.50));
 			instance.addItem(new ItemDetails(8, "Onion Rings", "Onion rings on the sandwich.", EItemType.Topping, 0.75));
 			instance.addItem(new ItemDetails(9, "French Fries", "Fries on the sandwich.", EItemType.Topping, 0.75));

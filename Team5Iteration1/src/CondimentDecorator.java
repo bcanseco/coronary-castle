@@ -34,11 +34,12 @@ public class CondimentDecorator extends MenuItem {
 	}
 	
 	public void setQuantity(int quantity) {
+		// Responsibility: DOING - updating the base item's quantity
 		menuItem.setQuantity(quantity);
 	}
 	
 	@Override
 	public String toString() {
-		return getName(true);
+		return getQuantity() + " " + getName(true);
 	}
 }

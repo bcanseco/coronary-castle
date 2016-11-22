@@ -21,7 +21,7 @@ public class MenuItem {
 	
 	public String getName(boolean condimentsExist) {
 		// Responsibility: KNOWING - the name of the item in the order
-		return quantity + " " + (condimentsExist ? "Cust. " + details.name : details.name);
+		return condimentsExist ? "Cust. " + details.name : details.name;
 	}
 
 	public int getQuantity() {
@@ -30,11 +30,12 @@ public class MenuItem {
 	}
 	
 	public void setQuantity(int quantity) {
+		// Responsibility: DOING - updating its own quantity
 		this.quantity = quantity;
 	}
 	
 	@Override
 	public String toString() {
-		return getName(false);
+		return getQuantity() + " " + getName(false);
 	}
 }

@@ -15,6 +15,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.List;
+import java.util.Queue;
 import javax.swing.border.TitledBorder;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -30,30 +31,38 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JTextPane;
+import java.awt.SystemColor;
 
 public class UI {
 	private JFrame frmProjectAssignment;
 	private JPanel landing;
 	private JPanel order;
 	private JPanel payment;
-
-	private static JPanel toppingsBorder;
-	private static JPanel menuBorder;
-	private static JTextField currentItem;
-	private static JTextField qty;
-	private static JTextField subtotal;
-	private static JButton btnAddItem;
-	private static JList<ItemDetails> toppingsContainer;
-	private static DefaultListModel<ItemDetails> toppingsList 
+	private JPanel toppingsBorder;
+	private JPanel menuBorder;
+	private JTextField currentItem;
+	private JTextField qty;
+	private JTextField yourTotal;
+	private JTextField inputCashAmount;
+	private JTextField subtotal;
+	private JButton btnNewOrder;
+	private JButton btnAddItem;
+	private JButton btnCash;
+	private JButton btnCredit;
+	private JButton btnSubmitOrder;
+	private JButton btnCancelOrder;
+	private JList<ItemDetails> toppingsContainer;
+	private JList<MenuItem> orderedItemsContainer;
+	private DefaultListModel<ItemDetails> toppingsList 
 		= new DefaultListModel<ItemDetails>();
-	private static JList<MenuItem> orderedItemsContainer;
-	private static DefaultListModel<MenuItem> orderedItemsList
+	private DefaultListModel<MenuItem> orderedItemsList
 		= new DefaultListModel<MenuItem>();
 
 	public static Store store;
 	public static Register register;
 	public static MenuCatalog catalog;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -109,7 +118,7 @@ public class UI {
 		for(int i = 0; i < menuItems.size(); i++) {
 			ItemDetails item = menuItems.get(i);
 			menuBtns[i] = new JButton(item.name);
-			menuBtns[i].setToolTipText(item.description);
+			menuBtns[i].setToolTipText("$" + item.getPrice() + " - " + item.description);
 			menuBtns[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
 			menuBtns[i].setPreferredSize(new Dimension(150, 25));
 			menuBtns[i].setFocusPainted(false);
@@ -123,6 +132,14 @@ public class UI {
 					}
 
 					if (register.currentItem != null) {
+						if (currentItem.getText().equals(item.name)) {
+							try {
+								qty.setText("" + (Integer.parseInt(qty.getText()) + 1));
+							} catch (Exception ex) {
+								qty.setText("2");
+							}
+							return;
+						}
 						toppingsList.clear();
 					}
 
@@ -130,7 +147,7 @@ public class UI {
 					currentItem.setText(item.name);
 					currentItem.setToolTipText(item.description);
 					qty.setText("1");
-					qty.setEditable(true);
+					qty.setEnabled(true);
 					btnAddItem.setEnabled(true);
 				}
 			});
@@ -149,7 +166,7 @@ public class UI {
 		for(int i = 0; i < toppingItems.size(); i++) {
 			ItemDetails item = toppingItems.get(i);
 			toppingBtns[i] = new JButton(item.name);
-			toppingBtns[i].setToolTipText(item.description);
+			toppingBtns[i].setToolTipText((item.getPrice() == 0.0 ? "FREE" : "$" + item.getPrice()) + " - " + item.description);
 			toppingBtns[i].setFont(new Font("Tahoma", Font.PLAIN, 15));
 			toppingBtns[i].setBounds(33, 110, 110, 43);
 			toppingBtns[i].setFocusPainted(false);
@@ -165,6 +182,15 @@ public class UI {
 	}
 
 	/**
+	 * Called to go back to the landing panel.
+	 */
+	private void resetApp() {
+		menuBorder.removeAll();
+		toppingsBorder.removeAll();
+		landing.setVisible(true);
+	}
+	
+	/**
 	 * Helper method to enable or disable the toppings buttons.
 	 * @param setEnabled - true to enable, false to disable.
 	 */
@@ -174,7 +200,18 @@ public class UI {
 			toppingsBorder.getComponents()[i].setEnabled(setEnabled);
 		}
 	}
-
+	
+	/**
+	 * Helper method to enable or disable the entrees buttons.
+	 * @param setEnabled - true to enable, false to disable.
+	 */
+	private void enableEntrees(boolean setEnabled) {
+		int length = menuBorder.getComponentCount();
+		for (int i = 0; i < length; i++) {
+			menuBorder.getComponents()[i].setEnabled(setEnabled);
+		}
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -200,8 +237,10 @@ public class UI {
 		btnEnter.setFocusPainted(false);
 		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// Switch to Ordering panel
 				landing.setVisible(false);
 				order.setVisible(true);
+				btnNewOrder.grabFocus();
 				createMenuButtons();
 				createToppingButtons();
 			}
@@ -277,9 +316,26 @@ public class UI {
 		JButton btnEndOrder = new JButton("Finish Order");
 		btnEndOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// Switch to payment panel
 				btnEndOrder.setEnabled(false);
+				btnSubmitOrder.setText("Submit Order");
+				btnCancelOrder.setText("Cancel Order");
+				btnCancelOrder.setBackground(new Color(220, 20, 60));
+				yourTotal.setText("$" + String.format("%.2f", register.currentSale.getTotal()));
+				orderedItemsList.clear();
+				toppingsList.clear();
+				qty.setText("");
+				qty.setEnabled(false);
+				currentItem.setText("");
+				subtotal.setText("");
+				btnAddItem.setEnabled(false);
+				btnNewOrder.setEnabled(true);
 				order.setVisible(false);
-				payment.setVisible(true);
+				if (register.currentSale.orderedItems.isEmpty()) {
+					resetApp(); // Back to landing if no items picked
+				} else {
+					payment.setVisible(true);
+				}
 			}
 		});
 		btnEndOrder.setBounds(30, 50, 109, 27);
@@ -289,7 +345,7 @@ public class UI {
 		btnEndOrder.setEnabled(false);
 		toolsBorder.add(btnEndOrder);
 
-		JButton btnNewOrder = new JButton("Start New Order");
+		btnNewOrder = new JButton("Start New Order");
 		btnNewOrder.setBounds(15, 18, 138, 27);
 		btnNewOrder.setHorizontalAlignment(SwingConstants.LEFT);
 		btnNewOrder.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -301,7 +357,7 @@ public class UI {
 				
 				int length = menuBorder.getComponentCount();
 				for (int i = 0; i < length; i++) {
-					menuBorder.getComponents()[i].setEnabled(true);
+					menuBorder.getComponents()[i].setEnabled(true); // enable menu items now that order started
 				}
 				
 				register.newSale();
@@ -333,11 +389,11 @@ public class UI {
 		yourOrderBorder.add(currentItem);
 
 		JLabel lblCurrentItem = new JLabel("Current item");
-		lblCurrentItem.setBounds(10, 25, 69, 14);
+		lblCurrentItem.setBounds(10, 25, 99, 14);
 		yourOrderBorder.add(lblCurrentItem);
 
 		JLabel lblToppings = new JLabel("Toppings");
-		lblToppings.setBounds(10, 71, 69, 14);
+		lblToppings.setBounds(10, 71, 99, 14);
 		yourOrderBorder.add(lblToppings);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -350,7 +406,8 @@ public class UI {
 		toppingsContainer.setBackground(UIManager.getColor("Button.background"));
 
 		qty = new JTextField();
-		qty.setEditable(false);
+		qty.setEditable(true);
+		qty.setEnabled(false);
 		qty.setBounds(116, 42, 21, 20);
 		yourOrderBorder.add(qty);
 		qty.setColumns(10);
@@ -362,10 +419,12 @@ public class UI {
 		btnAddItem = new JButton(">>");
 		btnAddItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// add item to your order list
 				int quantity;
 				try {
 					quantity = Integer.parseInt(qty.getText());
 				} catch (Exception e) {
+					// error checking
 					JOptionPane.showMessageDialog(new JMenu(), "Quantity must be an integer above zero.", 
 							"Invalid quantity", JOptionPane.WARNING_MESSAGE);
 					return;
@@ -381,7 +440,7 @@ public class UI {
 				subtotal.setText("$" + String.format("%.2f", register.currentSale.getTotal()));
 				currentItem.setText("");
 				qty.setText("");
-				qty.setEditable(false);
+				qty.setEnabled(false);
 				toppingsList.clear();
 				btnAddItem.setEnabled(false);
 				enableToppings(false);
@@ -394,7 +453,8 @@ public class UI {
 		yourOrderBorder.add(btnAddItem);
 
 		JLabel lblSubtotal = new JLabel("Subtotal:");
-		lblSubtotal.setBounds(242, 153, 46, 14);
+		lblSubtotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSubtotal.setBounds(191, 153, 97, 14);
 		yourOrderBorder.add(lblSubtotal);
 
 		subtotal = new JTextField();
@@ -405,11 +465,191 @@ public class UI {
 		subtotal.setColumns(10);
 
 		JLabel lblSale = new JLabel("Sale");
-		lblSale.setBounds(191, 25, 46, 14);
+		lblSale.setBounds(191, 25, 153, 14);
 		yourOrderBorder.add(lblSale);
 
 		payment = new JPanel();
 		frmProjectAssignment.getContentPane().add(payment, "payment");
 		payment.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Receipt", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(259, 11, 284, 348);
+		payment.add(panel);
+		panel.setLayout(null);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBorder(null);
+		scrollPane_2.setBounds(12, 24, 260, 312);
+		panel.add(scrollPane_2);
+		
+		JTextPane receiptPane = new JTextPane();
+		receiptPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		receiptPane.setBorder(null);
+		scrollPane_2.setViewportView(receiptPane);
+		receiptPane.setEditable(false);
+		receiptPane.setBackground(SystemColor.menu);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new TitledBorder(null, "We Accept", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBounds(10, 284, 244, 75);
+		payment.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(UI.class.getResource("/resources/cards.png")));
+		lblNewLabel.setBounds(10, 19, 229, 52);
+		panel_1.add(lblNewLabel);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(null, "Payment", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBounds(10, 11, 243, 267);
+		payment.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblYourTotal = new JLabel("Your total:");
+		lblYourTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblYourTotal.setBounds(10, 45, 84, 14);
+		panel_2.add(lblYourTotal);
+		
+		yourTotal = new JTextField();
+		yourTotal.setEditable(false);
+		yourTotal.setBounds(99, 42, 57, 20);
+		panel_2.add(yourTotal);
+		yourTotal.setColumns(10);
+		
+		JLabel lblThanksForOrdering = new JLabel("Thanks for ordering at Coronary Castle!");
+		lblThanksForOrdering.setBounds(15, 23, 218, 14);
+		panel_2.add(lblThanksForOrdering);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(null, "Choose tender", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_3.setBounds(10, 81, 223, 93);
+		panel_2.add(panel_3);
+		panel_3.setLayout(null);
+		
+		JLabel lblInputCashAmount = new JLabel("Input cash amount:");
+		lblInputCashAmount.setEnabled(false);
+		lblInputCashAmount.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblInputCashAmount.setBounds(10, 63, 117, 14);
+		panel_3.add(lblInputCashAmount);
+		
+		btnCredit = new JButton("Credit");
+		btnCredit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// no need to input amount, the cc will pay it full evenly
+				btnCredit.setEnabled(false);
+				btnCash.setEnabled(true);
+				btnSubmitOrder.setEnabled(true);
+				lblInputCashAmount.setEnabled(false);
+				inputCashAmount.setEnabled(false);
+				inputCashAmount.setText("");
+			}
+		});
+		btnCredit.setBounds(110, 21, 81, 31);
+		btnCredit.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		btnCredit.setFocusPainted(false);
+		panel_3.add(btnCredit);
+		
+		inputCashAmount = new JTextField();
+		inputCashAmount.setEnabled(false);
+		inputCashAmount.setColumns(10);
+		inputCashAmount.setBounds(134, 60, 57, 20);
+		panel_3.add(inputCashAmount);
+		
+		btnCash = new JButton("Cash");
+		btnCash.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// ask for exact input
+				btnCash.setEnabled(false);
+				btnCredit.setEnabled(true);
+				btnSubmitOrder.setEnabled(true);
+				lblInputCashAmount.setEnabled(true);
+				inputCashAmount.setEnabled(true);
+				inputCashAmount.grabFocus();
+			}
+		});
+		btnCash.setBounds(32, 21, 73, 31);
+		btnCash.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		btnCash.setFocusPainted(false);
+		panel_3.add(btnCash);
+		
+		btnCancelOrder = new JButton("Cancel Order");
+		btnCancelOrder.setFocusable(false);
+		btnCancelOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				payment.setVisible(false);
+				btnSubmitOrder.setEnabled(false);
+				btnCredit.setEnabled(true);
+				btnCash.setEnabled(true);
+				receiptPane.setText("");
+				if (register.currentSale.isComplete) {
+					resetApp(); // return to landing (canceled after submitting)
+				} else {
+					enableEntrees(false); // return to ordering (canceled before submitting)
+					order.setVisible(true);
+					btnNewOrder.grabFocus();
+				}
+			}
+		});
+		btnCancelOrder.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		btnCancelOrder.setBackground(new Color(220, 20, 60));
+		btnCancelOrder.setBounds(43, 222, 156, 30);
+		btnCancelOrder.setFocusPainted(false);
+		panel_2.add(btnCancelOrder);
+		
+		btnSubmitOrder = new JButton("Submit Order");
+		btnSubmitOrder.setEnabled(false);
+		btnSubmitOrder.setFocusable(false);
+		btnSubmitOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (lblInputCashAmount.isEnabled()) {
+					// cash must be validated
+					
+					double balance;
+					try {
+						balance = Double.parseDouble(inputCashAmount.getText().replace("$", ""));
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(new JMenu(), "Cash amount must be an amount above zero.", 
+								"Invalid cash amount", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+					
+					if (Double.compare(balance, register.currentSale.getTotal()) < 0) {
+						JOptionPane.showMessageDialog(new JMenu(), "Insufficient cash! You need $"
+								+ String.format("%.2f", register.currentSale.getTotal()) + ".", "Invalid cash amount", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+					
+					register.makePayment(true, balance);
+				} else {
+					// credit pays all evenly
+					register.makePayment(false, register.currentSale.getTotal());
+				}
+				
+				register.endSale();
+				
+				btnCash.setEnabled(false);
+				lblInputCashAmount.setEnabled(false);
+				inputCashAmount.setEnabled(false);
+				inputCashAmount.setText("");
+				btnCredit.setEnabled(false);
+				btnSubmitOrder.setEnabled(false);
+				btnCancelOrder.setText("Main Menu");
+				btnCancelOrder.setBackground(null);
+				
+				// print receipt
+				Queue<String> receiptData = register.getReceiptData();
+				
+				while (!receiptData.isEmpty()) {
+					receiptPane.setText(receiptPane.getText() + "\n" + receiptData.poll());
+				}
+			}
+		});
+		btnSubmitOrder.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		btnSubmitOrder.setBackground(new Color(34, 139, 34));
+		btnSubmitOrder.setBounds(43, 185, 156, 30);
+		btnSubmitOrder.setFocusPainted(false);
+		panel_2.add(btnSubmitOrder);
 	}
 }

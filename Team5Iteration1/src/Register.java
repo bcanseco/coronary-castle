@@ -6,6 +6,8 @@
  */
 
 import java.time.ZonedDateTime;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Register {
 	public Sale currentSale;
@@ -66,28 +68,31 @@ public class Register {
 		currentSale.makePayment(type, amount);
 	}
 
-	public void printReceipt() {
-		// Responsibility: DOING - the printing of the receipt
+	public Queue<String> getReceiptData() {
+		// Responsibility: KNOWING - the printing of the receipt
+		Queue<String> receiptData = new LinkedList<String>();
 		ZonedDateTime zdt = ZonedDateTime.now();
-		String header = "===== CORONARY CASTLE =====\r\n" + 
-						" 150 W. University Blvd.\r\n" +
-						" Melbourne, FL 32901\r\n\r\n" +
-						"Sale Date: " + zdt.toLocalDate() + "\r\n" +
-						"Sale Time: " + zdt.toLocalTime() + "\r\n" +
-						"Items Sold: " + currentSale.orderedItems.size() +
-						"\r\n" + 
-						"---------------------------";
-		StringBuilder items = new StringBuilder();
-		for(MenuItem mi : currentSale.orderedItems) {
-			items.append(mi.getName(false) + "\r\n\t\t" + mi.getQuantity() + "  $" + mi.getSubtotal() + "\r\n");
+		int total = 0;
+		
+		receiptData.add("========= CORONARY CASTLE ========");
+		receiptData.add("      150 W. University Blvd.");
+		receiptData.add("        Melbourne, FL 32901");
+		receiptData.add("         Date: " + zdt.toLocalDate());
+		receiptData.add("       Time: " + zdt.toLocalTime());
+		receiptData.add("----------------------------------");
+		receiptData.add("Item                    Qty  Price");
+		for (MenuItem item : currentSale.orderedItems) {
+			total += item.getQuantity();
+			receiptData.add(String.format("%-22s %3s %7s", 
+					item.getName(false), item.getQuantity(), String.format("%.2f", item.getSubtotal())));
 		}
-		String footer = "---------------------------\r\n" +
-						"\t   Total: $" + currentSale.getTotal() + "\r\n" +
-						"\t   Paid:  $" + currentSale.payment.getAmount() + "\r\n\r\n" +
-						"   Have a CORONARY day! \r\n\r\n";
-		System.out.println("\r\n");
-		System.out.println(header);
-		System.out.println(items);
-		System.out.println(footer);
+		receiptData.add(String.format("%22s %3s %7s", "Total:", 
+				total, String.format("%.2f", currentSale.getTotal())));
+		receiptData.add(String.format("%22s %11s", "Paid:", String.format("%.2f", currentSale.payment.getAmount())));
+		receiptData.add(String.format("%22s %11s", "Change:", String.format("%.2f", currentSale.getChange())));
+		receiptData.add("----------------------------------");
+		receiptData.add("       Have a CORONARY day!       ");
+		
+		return receiptData;
 	}
 }

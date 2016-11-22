@@ -21,6 +21,7 @@ public class Sale {
 	
 	public void becomeComplete() {
 		// Responsibility: DOING - recording Sale completed status
+		isComplete = true;
 		Store.addCompleteSale(this);
 	}
 	
@@ -43,8 +44,8 @@ public class Sale {
 		return total;
 	}
 	
-	public double getBalance() {
+	public double getChange() {
 		// Responsibility: KNOWING - the amount to be handed over as change after the payment
-		return getTotal() - payment.getAmount();
+		return payment.getAmount() - getTotal();
 	}
 }

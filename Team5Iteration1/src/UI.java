@@ -535,6 +535,7 @@ public class UI {
 		panel_3.add(lblInputCashAmount);
 		
 		btnCredit = new JButton("Credit");
+		btnCredit.setToolTipText("The amount will automatically be paid in full.");
 		btnCredit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// no need to input amount, the cc will pay it full evenly
@@ -558,6 +559,7 @@ public class UI {
 		panel_3.add(inputCashAmount);
 		
 		btnCash = new JButton("Cash");
+		btnCash.setToolTipText("You will need to enter the amount you wish to pay.");
 		btnCash.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// ask for exact input
@@ -580,6 +582,8 @@ public class UI {
 			public void actionPerformed(ActionEvent e) {
 				payment.setVisible(false);
 				btnSubmitOrder.setEnabled(false);
+				inputCashAmount.setEnabled(false);
+				lblInputCashAmount.setEnabled(false);
 				btnCredit.setEnabled(true);
 				btnCash.setEnabled(true);
 				receiptPane.setText("");

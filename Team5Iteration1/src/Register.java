@@ -78,9 +78,9 @@ public class Register {
 		receiptData.add("      150 W. University Blvd.");
 		receiptData.add("        Melbourne, FL 32901");
 		receiptData.add("         Date: " + zdt.toLocalDate());
-		receiptData.add("       Time: " + zdt.toLocalTime());
+		receiptData.add("        Time: " + zdt.toLocalTime());
 		receiptData.add("----------------------------------");
-		receiptData.add("Item                    Qty  Price");
+		receiptData.add("ITEM                    QTY  PRICE");
 		for (MenuItem item : currentSale.orderedItems) {
 			total += item.getQuantity();
 			receiptData.add(String.format("%-22s %3s %7s", 

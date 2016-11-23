@@ -1,5 +1,13 @@
-<a href="https://aanimesh.files.wordpress.com/2013/09/applying-uml-and-patterns-3rd.pdf#page=492"><img align="right" src="http://i.imgur.com/daY0hVP.png"/></a>
+Coronary Castle
+============
+This was the final project for Software Design Methods at Florida Tech. The goal was to design and develop software for a fast food restaurant such that classes would have high cohesion and low coupling.
 
-# Software Design Methods
+![](https://borja.io/images/burg.gif "GIF Demonstration")
 
-Starting us off with some of the classes from figure 18.17 in the book. Adapted where necessary to fit a fast food joint.
+### Group 5 members:
+* Borja Canseco
+* Pablo Canseco
+* Waylon Hudson
+
+**To run, double-click the included .jar file.**  
+An installation of Java is required. To install Java, go to https://www.java.com/en/download

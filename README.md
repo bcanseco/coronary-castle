@@ -2,7 +2,7 @@ Coronary Castle
 ============
 This was the final project for Software Design Methods at Florida Tech. The goal was to design and develop software for a fast food restaurant such that classes would have high cohesion and low coupling.
 
-![](https://borja.io/images/burg.gif "GIF Demonstration")
+![](./burg.gif "GIF Demonstration")
 
 ### Group 5 members:
 * Borja Canseco
